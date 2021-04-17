@@ -4,15 +4,15 @@ public class Tablero {
 
 	private int num_filas;
 	private int num_columnas;
-	// tablero en sí mismo
+	// tablero en sï¿½ mismo
 	private String contenido[][];
 
 	// Posiciones que significan victorial del jugador
-	// TODO int[] posicionesProhibidas = new int[0];
+	//  int[] posicionesProhibidas = new int[0];
 
 	public final int MAX_CASILLAS;
 
-	// el valor que tiene el hueco vacío del tablero por defecto ' '
+	// el valor que tiene el hueco vacï¿½o del tablero por defecto ' '
 	private String valor_vacio;
 
 	// Constructor
@@ -34,7 +34,7 @@ public class Tablero {
 		ini_tablero();
 	}
 
-	// Contador vertical: función que se limita a contar las fichas en cada columna.
+	// Contador vertical: funciï¿½n que se limita a contar las fichas en cada columna.
 
 	public int contadorVertical(String currentChip, int contadorObjetivo) {
 
@@ -60,8 +60,8 @@ public class Tablero {
 				if ((contador == contadorObjetivo) && (fila > (contadorObjetivo - 1))
 						&& contenido[fila - contadorObjetivo][columna].equals(valor_vacio)) {
 
-					// fila > 2 supone el límite para que la comprobación de la posición fila - 3
-					// (vacía) no
+					// fila > 2 supone el lï¿½mite para que la comprobaciï¿½n de la posiciï¿½n fila - 3
+					// (vacï¿½a) no
 					// se salga del tablero
 
 					System.out.println("AI vertical " + columna);
@@ -135,7 +135,7 @@ public class Tablero {
 
 					}
 
-					// Comprobación de la posición M M _ M o R R _ R
+					// Comprobaciï¿½n de la posiciï¿½n M M _ M o R R _ R
 
 					if ((columna < (num_columnas - 3)) && ((contenido[fila][columna].equals(currentChip)
 							&& contenido[fila][columna + 1].equals(currentChip)
@@ -162,11 +162,11 @@ public class Tablero {
 
 	public int contadorDiagonal(String currentChip, int contadorObjetivo) {
 
-		// Selección de columna
+		// Selecciï¿½n de columna
 
 		for (int columna = 0; columna < num_columnas; columna++) {
 
-			// Selección de fila
+			// Selecciï¿½n de fila
 
 			for (int fila = 0; fila < num_filas; fila++) {
 				int col = columna;
@@ -216,7 +216,7 @@ public class Tablero {
 
 						return col + 1;
 
-						// Comprobación hueco en currentChip valor_vacio currentChip currentChip
+						// Comprobaciï¿½n hueco en currentChip valor_vacio currentChip currentChip
 
 					}
 
@@ -233,7 +233,7 @@ public class Tablero {
 
 							return col + 1;
 
-							// Comprobación hueco en currentChip currentChip valor_vacio currentChip
+							// Comprobaciï¿½n hueco en currentChip currentChip valor_vacio currentChip
 
 						} else if ((col < (num_columnas - 3)) && (fil < (num_filas - 3))
 								&& ((contenido[fil][col].equals(currentChip)
@@ -291,11 +291,11 @@ public class Tablero {
 
 						return col + contadorObjetivo;
 
-						// Comprobación límite inferior izquierdo.
+						// Comprobaciï¿½n lï¿½mite inferior izquierdo.
 					} else if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas)) && (col > 0)
 							&& contenido[fil + 1][col - 1].equals(valor_vacio))) {
 
-						// Comprobación hueco inferior lleno para no regalar la jugada
+						// Comprobaciï¿½n hueco inferior lleno para no regalar la jugada
 						if (fil + 1 == num_filas - 1) {
 
 							System.out.println("AI antidiagonal " + (col - 1));
@@ -311,7 +311,7 @@ public class Tablero {
 
 						}
 
-						// Comprobación hueco en currentChip valor_vacio currentChip currentChip
+						// Comprobaciï¿½n hueco en currentChip valor_vacio currentChip currentChip
 						// De derecha a izquierda
 
 					}
@@ -329,7 +329,7 @@ public class Tablero {
 
 							return col - 1;
 
-							// Comprobación hueco en currentChip currentChip valor_vacio currentChip
+							// Comprobaciï¿½n hueco en currentChip currentChip valor_vacio currentChip
 							// De derecha a izquierda
 
 						} else if ((col > 2) && (fil < (num_filas - 3))
@@ -500,7 +500,7 @@ public class Tablero {
 		return false;
 	}
 
-	// Condición de victoria
+	// Condiciï¿½n de victoria
 	public boolean check_victoria(Jugador player) {
 		return check_diagonal(player) || check_horizontal(player) || check_vertical(player);
 

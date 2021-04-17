@@ -24,7 +24,7 @@ public class Conecta4 {
 
 			this.tablero = new Tablero(num_filas, num_cols, " ");
 
-			// Inicialización de jugadores y asignación de fichas
+			// Inicializaciï¿½n de jugadores y asignaciï¿½n de fichas
 			this.player = new Jugador[num_jugadores];
 			for (int i = 0; i < num_jugadores; i++) {
 				this.player[i] = new Jugador(fichas_disponibles[i], i + 1, true);
@@ -43,16 +43,16 @@ public class Conecta4 {
 
 			} else {
 				// Si se introduce un 1 en la solicitud de numero de jugadores, se inicializa
-				// máquina, una clase heredada de jugador
+				// mï¿½quina, una clase heredada de jugador
 				System.out.println();
 				this.tablero = new Tablero(num_filas, num_cols, " ");
 
-				// Inicialización de jugadores
+				// Inicializaciï¿½n de jugadores
 				this.player = new Jugador[2];
 				this.player[0] = new Jugador("O", 1, true);
 				this.player[1] = new Jugador("X", 2, false);
 
-				// Una vez incializada la máquina cambiamos el numero de jugadores a 2 para que
+				// Una vez incializada la mï¿½quina cambiamos el numero de jugadores a 2 para que
 				// el turno se cuente correctamente
 				this.num_jugadores = 2;
 
@@ -74,7 +74,7 @@ public class Conecta4 {
 
 			int user_col = -1;
 
-			// Se comprueba si el jugador es humano, si no, else -> tirada de la máquina
+			// Se comprueba si el jugador es humano, si no, else -> tirada de la mï¿½quina
 
 			if (current_player.isHuman()) {
 
@@ -136,6 +136,7 @@ public class Conecta4 {
 	}
 
 	public int introducirDato() {
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int entrada = 0;
 		boolean isNum = false;
@@ -145,9 +146,10 @@ public class Conecta4 {
 				entrada = Integer.parseInt(scan.next());
 				isNum = true;
 			} catch (NumberFormatException e) {
-				System.out.print("Error de entrada, introduzca de nuevo el número: ");
+				System.out.print("Error de entrada, introduzca de nuevo el nï¿½mero: ");
 			}
 		} while (!isNum);
+
 		return entrada;
 
 	}

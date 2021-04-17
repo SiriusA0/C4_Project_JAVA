@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class ConectaCuatro_OO {
 
 	public static void main(String[] args) {
-
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 
 		boolean jugarOtraVez = false;
@@ -14,7 +14,7 @@ public class ConectaCuatro_OO {
 
 			Conecta4 juego = new Conecta4(8, 8);
 			juego.jugar();
-			System.out.print("¿Desea jugar otra partida? 'Y' para volver a jugar");
+			System.out.print("ï¿½Desea jugar otra partida? 'Y' para volver a jugar");
 			String respuesta = scan.nextLine();
 			if (respuesta.equals("Y")) {
 				jugarOtraVez = true;
@@ -23,6 +23,8 @@ public class ConectaCuatro_OO {
 			}
 
 		} while (jugarOtraVez);
+
+		
 
 	}
 
