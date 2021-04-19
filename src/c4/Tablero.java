@@ -4,15 +4,18 @@ public class Tablero {
 
 	private int num_filas;
 	private int num_columnas;
-	// tablero en s� mismo
+	// tablero en si mismo
 	private String contenido[][];
 
+	//Array de posiciones prohibidas
+	// metodo contains para checkear si el numero de col devuelto es una posicion prohibida
+	
 	// Posiciones que significan victorial del jugador
 	//  int[] posicionesProhibidas = new int[0];
 
 	public final int MAX_CASILLAS;
 
-	// el valor que tiene el hueco vac�o del tablero por defecto ' '
+	// el valor que tiene el hueco vacio del tablero por defecto ' '
 	private String valor_vacio;
 
 	// Constructor
@@ -34,7 +37,7 @@ public class Tablero {
 		ini_tablero();
 	}
 
-	// Contador vertical: funci�n que se limita a contar las fichas en cada columna.
+	// Contador vertical: funcion que se limita a contar las fichas en cada columna.
 
 	public int contadorVertical(String currentChip, int contadorObjetivo) {
 
@@ -60,8 +63,8 @@ public class Tablero {
 				if ((contador == contadorObjetivo) && (fila > (contadorObjetivo - 1))
 						&& contenido[fila - contadorObjetivo][columna].equals(valor_vacio)) {
 
-					// fila > 2 supone el l�mite para que la comprobaci�n de la posici�n fila - 3
-					// (vac�a) no
+					// fila > 2 supone el limite para que la comprobacion de la posicioo fila - 3
+					// (vacia) no
 					// se salga del tablero
 
 					System.out.println("AI vertical " + columna);
@@ -135,7 +138,7 @@ public class Tablero {
 
 					}
 
-					// Comprobaci�n de la posici�n M M _ M o R R _ R
+					// Comprobacion de la posicion M M _ M o R R _ R
 
 					if ((columna < (num_columnas - 3)) && ((contenido[fila][columna].equals(currentChip)
 							&& contenido[fila][columna + 1].equals(currentChip)
@@ -162,11 +165,11 @@ public class Tablero {
 
 	public int contadorDiagonal(String currentChip, int contadorObjetivo) {
 
-		// Selecci�n de columna
+		// Seleccion de columna
 
 		for (int columna = 0; columna < num_columnas; columna++) {
 
-			// Selecci�n de fila
+			// Seleccion de fila
 
 			for (int fila = 0; fila < num_filas; fila++) {
 				int col = columna;
@@ -216,7 +219,7 @@ public class Tablero {
 
 						return col + 1;
 
-						// Comprobaci�n hueco en currentChip valor_vacio currentChip currentChip
+						// Comprobacion hueco en currentChip valor_vacio currentChip currentChip
 
 					}
 
@@ -233,7 +236,7 @@ public class Tablero {
 
 							return col + 1;
 
-							// Comprobaci�n hueco en currentChip currentChip valor_vacio currentChip
+							// Comprobacion hueco en currentChip currentChip valor_vacio currentChip
 
 						} else if ((col < (num_columnas - 3)) && (fil < (num_filas - 3))
 								&& ((contenido[fil][col].equals(currentChip)
@@ -291,11 +294,11 @@ public class Tablero {
 
 						return col + contadorObjetivo;
 
-						// Comprobaci�n l�mite inferior izquierdo.
+						// Comprobacion limite inferior izquierdo.
 					} else if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas)) && (col > 0)
 							&& contenido[fil + 1][col - 1].equals(valor_vacio))) {
 
-						// Comprobaci�n hueco inferior lleno para no regalar la jugada
+						// Comprobacion hueco inferior lleno para no regalar la jugada
 						if (fil + 1 == num_filas - 1) {
 
 							System.out.println("AI antidiagonal " + (col - 1));
@@ -311,7 +314,7 @@ public class Tablero {
 
 						}
 
-						// Comprobaci�n hueco en currentChip valor_vacio currentChip currentChip
+						// Comprobacion hueco en currentChip valor_vacio currentChip currentChip
 						// De derecha a izquierda
 
 					}
@@ -329,7 +332,7 @@ public class Tablero {
 
 							return col - 1;
 
-							// Comprobaci�n hueco en currentChip currentChip valor_vacio currentChip
+							// Comprobacion hueco en currentChip currentChip valor_vacio currentChip
 							// De derecha a izquierda
 
 						} else if ((col > 2) && (fil < (num_filas - 3))
@@ -500,7 +503,7 @@ public class Tablero {
 		return false;
 	}
 
-	// Condici�n de victoria
+	// Condicion de victoria
 	public boolean check_victoria(Jugador player) {
 		return check_diagonal(player) || check_horizontal(player) || check_vertical(player);
 
