@@ -83,36 +83,38 @@ public class Conecta4 {
 
 			} else {
 
-				user_col = tablero.AIPlay(current_player.getFichas(), 3);
+				user_col = tablero.AIPlay(current_player, no_current_player, 3);
+
+				if (user_col == -1) {
+					user_col = tablero.AIPlay(no_current_player, current_player, 3);
+				}
+				if (user_col == -1) {
+					user_col = tablero.AIPlay(no_current_player, current_player, 2);
+				}
+
+				if (user_col == -1) {
+					user_col = tablero.AIPlay(current_player, no_current_player, 2);
+				}
+
+				if (user_col == -1) {
+					user_col = tablero.AIPlay(current_player, no_current_player, 1);
+				}
+
+				if (user_col == -1) {
+					user_col = tablero.AIPlay(no_current_player, current_player, 1);
+				}
 
 				if (user_col == -1) {
 
-					user_col = tablero.AIPlay(no_current_player.getFichas(), 3);
+					if (turno < 6) {
 
-					if (user_col == -1) {
+						user_col = tablero.RandomPlay(3, tablero.getNum_columnas() - 5);
+						System.out.print("Apertura");
 
-						user_col = tablero.AIPlay(no_current_player.getFichas(), 2);
+					} else {
+						user_col = tablero.RandomPlay(0, -1);
+						System.out.print("Random");
 
-						if (user_col == -1) {
-
-							// user_col = tablero.AIPlay(current_player.getFichas(), 2);
-
-							if (user_col == -1) {
-
-								if (turno < 6) {
-
-									user_col = tablero.RandomPlay(3, tablero.getNum_columnas() - 5);
-									System.out.print("Apertura");
-
-								} else {
-									user_col = tablero.RandomPlay(0, -1);
-									System.out.print("Random");
-
-								}
-
-							}
-
-						}
 					}
 				}
 			}

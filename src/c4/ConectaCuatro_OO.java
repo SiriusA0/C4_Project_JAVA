@@ -9,7 +9,7 @@ public class ConectaCuatro_OO {
 		Scanner scan = new Scanner(System.in);
 
 		boolean jugarOtraVez = false;
-
+	
 		do {
 
 			Conecta4 juego = new Conecta4(8, 8);

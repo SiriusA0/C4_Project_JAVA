@@ -7,11 +7,12 @@ public class Tablero {
 	// tablero en si mismo
 	private String contenido[][];
 
-	//Array de posiciones prohibidas
-	// metodo contains para checkear si el numero de col devuelto es una posicion prohibida
-	
+	// Array de posiciones prohibidas
+	// metodo contains para checkear si el numero de col devuelto es una posicion
+	// prohibida
+
 	// Posiciones que significan victorial del jugador
-	//  int[] posicionesProhibidas = new int[0];
+	// int[] posicionesProhibidas = new int[0];
 
 	public final int MAX_CASILLAS;
 
@@ -28,18 +29,83 @@ public class Tablero {
 		contenido = new String[num_filas][num_columnas];
 		this.MAX_CASILLAS = num_columnas * num_filas;
 
-//		for (int i = 1; i < (num_columnas - 1); i++) {
-//
-//			posicionesProhibidas[i] = -1;
-//
-//		}
+		// for (int i = 1; i < (num_columnas - 1); i++) {
+		//
+		// posicionesProhibidas[i] = -1;
+		//
+		// }
 
 		ini_tablero();
 	}
 
+	// Prevision de jugada AI
+
+	private boolean AIForecastPlay(Jugador current_player, Jugador no_current_player, int cpuCol) {
+		// Funcion mejora AI, devuelve verdadero si la jugada es una buena jugada y no
+		// regala la victoria
+
+		String currentChip = current_player.getFichas();
+		String noCurrentChip = no_current_player.getFichas();
+
+		boolean flag = true;
+
+		String[][] auxContent = new String[num_filas][num_columnas];
+
+		// Copia del tablero actual en uno auxiliar
+		for (int i = 0; i < num_filas; i++) {
+			for (int x = 0; x < num_columnas; x++) {
+				auxContent[i][x] = contenido[i][x];
+
+			}
+		}
+
+		// Realizar la jugada elegida por la maquina en el tablero auxiliar
+
+		for (int i = num_filas - 1; i >= 0; i--) {
+			if (auxContent[i][cpuCol].equals(valor_vacio)) {
+				auxContent[i][cpuCol] = currentChip;
+			}
+		}
+
+		if (check_victoria(current_player)) { // Devuelve true si hay victoria de la máquina
+
+			System.out.println("AIForecastPlay - Victoria");
+			return true;
+		}
+
+		// Comprobación de la posibilidad de victoria del jugador humano
+
+		for (int i = 0; i < num_columnas; i++) {
+
+			for (int x = num_filas - 1; x >= 0; x--) { // corregir error al tener columnas llenas
+				if (auxContent[x][i].equals(valor_vacio)) {
+					auxContent[x][i] = noCurrentChip;
+				}
+
+				// Comprobacion victoria futura
+
+				if (check_victoria(no_current_player)) { // Devuelve true si hay victoria del rival
+
+					System.out.println("AIForecastPlay - No derrota");
+					flag = false;
+				}else{
+					System.out.println("AIForecastPlay - buena jugada");
+					flag = true;
+				}
+
+				auxContent[x][i] = valor_vacio;
+			}
+
+		}
+		
+		return flag;
+	}
+
 	// Contador vertical: funcion que se limita a contar las fichas en cada columna.
 
-	public int contadorVertical(String currentChip, int contadorObjetivo) {
+	public int contadorVertical(Jugador current_player, Jugador no_current_player, int contadorObjetivo) {
+
+		String currentChip = current_player.getFichas();
 
 		int contador = 0;
 
@@ -69,7 +135,9 @@ public class Tablero {
 
 					System.out.println("AI vertical " + columna);
 
-					return columna;
+					if (AIForecastPlay(current_player, no_current_player, columna)) {
+						return columna;
+					}
 
 				}
 
@@ -78,7 +146,9 @@ public class Tablero {
 		return -1;
 	}
 
-	public int contadorHorizontal(String currentChip, int contadorObjetivo) {
+	public int contadorHorizontal(Jugador current_player, Jugador no_current_player, int contadorObjetivo) {
+
+		String currentChip = current_player.getFichas();
 
 		int contador = 0;
 
@@ -102,7 +172,9 @@ public class Tablero {
 
 						System.out.println("AI horizontal " + (columna - contadorObjetivo));
 
-						return columna - contadorObjetivo;
+						if (AIForecastPlay(current_player, no_current_player, (columna - contadorObjetivo))) {
+							return columna - contadorObjetivo;
+						}
 					}
 
 				}
@@ -113,7 +185,10 @@ public class Tablero {
 
 						System.out.println("AI horizontal " + (columna + 1));
 
-						return columna + 1;
+						if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
+							return columna + 1;
+						}
+
 					}
 
 				}
@@ -163,7 +238,9 @@ public class Tablero {
 
 	}
 
-	public int contadorDiagonal(String currentChip, int contadorObjetivo) {
+	public int contadorDiagonal(Jugador current_player, Jugador no_current_player, int contadorObjetivo) {
+
+		String currentChip = current_player.getFichas();
 
 		// Seleccion de columna
 
@@ -197,7 +274,9 @@ public class Tablero {
 
 						System.out.println("AI diagonal " + (col - contadorObjetivo));
 
-						return col - contadorObjetivo;
+						if (AIForecastPlay(current_player, no_current_player, (col - contadorObjetivo))) {
+							return col - contadorObjetivo;
+						}
 
 						// Posicion inferior derecha fila == ultima fila
 					} else if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas))
@@ -207,7 +286,9 @@ public class Tablero {
 
 						System.out.println("AI diagonal " + (col + 1));
 
-						return col + 1;
+						if (AIForecastPlay(current_player, no_current_player, (col + 1))) {
+							return col + 1;
+						}
 
 						// // Posicion inferior derecha, fila != ultima fila, comprueba la inferior
 					} else if ((contador == contadorObjetivo) && (col < (num_columnas - (contadorObjetivo - 1)))
@@ -217,8 +298,9 @@ public class Tablero {
 
 						System.out.println("AI diagonal " + (col + 1));
 
-						return col + 1;
-
+						if (AIForecastPlay(current_player, no_current_player, (col + 1))) {
+							return col + 1;
+						}
 						// Comprobacion hueco en currentChip valor_vacio currentChip currentChip
 
 					}
@@ -262,7 +344,9 @@ public class Tablero {
 		return -1;
 	}
 
-	public int contadorAntiDiagonal(String currentChip, int contadorObjetivo) {
+	public int contadorAntiDiagonal(Jugador current_player, Jugador no_current_player, int contadorObjetivo) {
+
+		String currentChip = current_player.getFichas();
 
 		// Seleccion de columna
 		for (int columna = num_columnas - 1; columna >= 0; columna--) {
@@ -292,7 +376,9 @@ public class Tablero {
 
 						System.out.println("AI antidiagonal " + (col + contadorObjetivo));
 
-						return col + contadorObjetivo;
+						if (AIForecastPlay(current_player, no_current_player, (col + contadorObjetivo))) {
+							return col + contadorObjetivo;
+						}
 
 						// Comprobacion limite inferior izquierdo.
 					} else if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas)) && (col > 0)
@@ -303,14 +389,18 @@ public class Tablero {
 
 							System.out.println("AI antidiagonal " + (col - 1));
 
-							return col - 1;
+							if (AIForecastPlay(current_player, no_current_player, (col - 1))) {
+								return col - 1;
+							}
 
 						} else if ((fil + 1 < num_filas - 1)
 								&& !contenido[fil + (contadorObjetivo - 1)][col - 1].equals(valor_vacio)) {
 
 							System.out.println("AI antidiagonal " + (col - 1));
 
-							return col - 1;
+							if (AIForecastPlay(current_player, no_current_player, (col - 1))) {
+								return col - 1;
+							}
 
 						}
 
@@ -360,27 +450,25 @@ public class Tablero {
 
 	}
 
-	public int AIPlay(String currentChip, int contadorObjetivo) {
+	public int AIPlay(Jugador current_player, Jugador no_current_player, int contadorObjetivo) {
 
 		int user_col = -1;
 
-		user_col = contadorVertical(currentChip, contadorObjetivo);
+		user_col = contadorHorizontal(current_player, no_current_player, contadorObjetivo);
+		if (user_col == -1) {
+
+			user_col = contadorVertical(current_player, no_current_player, contadorObjetivo);
+		}
 
 		if (user_col == -1) {
 
-			user_col = contadorHorizontal(currentChip, contadorObjetivo);
+			user_col = contadorDiagonal(current_player, no_current_player, contadorObjetivo);
 
 		}
 
 		if (user_col == -1) {
 
-			user_col = contadorDiagonal(currentChip, contadorObjetivo);
-
-		}
-
-		if (user_col == -1) {
-
-			user_col = contadorAntiDiagonal(currentChip, contadorObjetivo);
+			user_col = contadorAntiDiagonal(current_player, no_current_player, contadorObjetivo);
 
 		}
 
