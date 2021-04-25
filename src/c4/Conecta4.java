@@ -76,40 +76,7 @@ public class Conecta4 {
 
 			// Se comprueba si el jugador es humano, si no, else -> tirada de la maquina
 
-			if (current_player.isHuman()) {
-
-				System.out.print("Introduzca columna " + current_player.getNombre());
-				user_col = introducirDato() - 1;// Columna introducida por el jugador
-
-			} else {
-
-				user_col = tablero.AIPlay(current_player, no_current_player, 3);
-				
-				if (user_col == -1) {
-					user_col = tablero.AIPlay(no_current_player, current_player, 3);
-				}
-				if (user_col == -1) {
-					user_col = tablero.AIPlay(no_current_player, current_player, 2);
-				}
-
-				if (user_col == -1) {
-					user_col = tablero.AIPlay(current_player, no_current_player, 2);
-				}
-
-				if (user_col == -1) {
-
-					if (turno < 6) {
-
-						user_col = tablero.RandomPlay(3, tablero.getNum_columnas() - 5);
-						System.out.print("Apertura");
-
-					} else {
-						user_col = tablero.RandomPlay(0, -1);
-						System.out.print("Random");
-
-					}
-				}
-			}
+			user_col = arbolDeDecisiones(current_player, no_current_player);
 
 			System.out.println();
 
@@ -127,6 +94,46 @@ public class Conecta4 {
 
 		} while (!hayGanador && !tableroLleno);
 
+	}
+
+	private int arbolDeDecisiones(Jugador current_player, Jugador no_current_player) {
+		int user_col;
+		if (current_player.isHuman()) {
+
+			System.out.print("Introduzca columna " + current_player.getNombre());
+			user_col = introducirDato() - 1;// Columna introducida por el jugador
+
+		} else {
+
+			// Comprobacion tres fichas seguidas de la maquina
+			user_col = tablero.AIPlay(current_player, no_current_player, 3);
+
+			if (user_col == -1) { // Comprobacion tres fichas seguidas del humano
+				user_col = tablero.AIPlay(no_current_player, current_player, 3);
+			}
+			if (user_col == -1) { // Comprobacion dos fichas seguidas del humano
+				user_col = tablero.AIPlay(no_current_player, current_player, 2);
+			}
+
+			if (user_col == -1) { // Comprobacion tres fichas seguidas de la maquina
+				user_col = tablero.AIPlay(current_player, no_current_player, 2);
+			}
+
+			if (user_col == -1) { // Random TODO Posiciones prohibidas en lista
+
+				if (turno < 6) {
+
+					user_col = tablero.RandomPlay(3, tablero.getNum_columnas() - 5);
+					System.out.print("Apertura");
+
+				} else {
+					user_col = tablero.RandomPlay(0, -1);
+					System.out.print("Random");
+
+				}
+			}
+		}
+		return user_col;
 	}
 
 	public int introducirDato() {
