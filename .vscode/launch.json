@@ -5,6 +5,13 @@
             "name": "Launch ConectaCuatro_OO",
             "request": "launch",
             "mainClass": "C4_Proyect_JAVA/c4.ConectaCuatro_OO",
+            "projectName": "C4_Project_JAVA"
+        },
+        {
+            "type": "java",
+            "name": "Launch ConectaCuatro_OO",
+            "request": "launch",
+            "mainClass": "C4_Proyect_JAVA/c4.ConectaCuatro_OO",
             "projectName": "C4_Project_JAVA_fc64027a"
         },
         {

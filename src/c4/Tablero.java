@@ -45,9 +45,10 @@ public class Tablero {
 		// regala la victoria
 
 		String currentChip = current_player.getFichas();
-		System.out.println("Current Player: " + current_player.getNombre());
+		// System.out.println("Current Player: " + current_player.getNombre());
 		String noCurrentChip = no_current_player.getFichas();
-		System.out.println("No Current Player:  (M) " + no_current_player.getNombre());
+		// System.out.println("No Current Player: (M) " +
+		// no_current_player.getNombre());
 
 		String[][] auxContent = new String[num_filas][num_columnas];
 
@@ -70,13 +71,13 @@ public class Tablero {
 
 		if (check_victoriaAux(no_current_player, auxContent)) { // Devuelve true si hay victoria de la maquina
 
-			System.out.println("AIForecastPlay - Victoria Maquina");
+			// System.out.println("AIForecastPlay - Victoria Maquina");
 			return true;
 		}
 
 		if (check_victoriaAux(current_player, auxContent)) { // Devuelve true si hay victoria de la humano
 
-			System.out.println("AIForecastPlay - Victoria Humana");
+			// System.out.println("AIForecastPlay - Victoria Humana");
 			return true;
 		}
 
@@ -99,7 +100,7 @@ public class Tablero {
 
 			if (check_victoriaAux(current_player, auxContent)) { // Devuelve true si hay victoria del rival
 
-				System.out.println("AIForecastPlay - No derrota");
+				// System.out.println("AIForecastPlay - No derrota");
 				return false;
 			}
 			auxContent[x_aux][i] = valor_vacio;
@@ -140,7 +141,7 @@ public class Tablero {
 					// (vacia) no
 					// se salga del tablero
 
-					System.out.println("AI vertical " + columna);
+					// System.out.println("AI vertical " + columna);
 
 					if (AIForecastPlay(current_player, no_current_player, columna)) {
 						return columna;
@@ -170,6 +171,30 @@ public class Tablero {
 				} else {
 					contador = 0;
 				}
+				//3, 1 , 3, 2, 5
+				// Check ? _ ?
+				if (contadorObjetivo == 2 
+								&& (columna < (num_columnas - 2))
+								&& (fila == num_filas-1)
+								&& ((contenido[fila][columna].equals(currentChip)
+								&& contenido[fila][columna + 1].equals(valor_vacio)
+								&& contenido[fila][columna + 2].equals(currentChip)))) {
+
+					return columna + 1;
+
+				}
+				if (contadorObjetivo == 2 
+								&& (columna < (num_columnas - 2))
+								&& (fila < num_filas-1)
+								&& ((contenido[fila][columna].equals(currentChip)
+								&& contenido[fila][columna + 1].equals(valor_vacio)
+								&& !contenido[fila+1][columna + 1].equals(valor_vacio)
+								&& contenido[fila][columna + 2].equals(currentChip)))) {
+
+					return columna + 1;
+
+				}
+				
 
 				if ((contador == contadorObjetivo) && (columna > (contadorObjetivo - 1))
 						&& contenido[fila][columna - contadorObjetivo].equals(valor_vacio)) {
@@ -177,7 +202,7 @@ public class Tablero {
 					if ((fila == (num_columnas - 1))
 							|| !contenido[fila + 1][columna - contadorObjetivo].equals(valor_vacio)) {
 
-						System.out.println("AI horizontal " + (columna - contadorObjetivo));
+						// System.out.println("AI horizontal " + (columna - contadorObjetivo));
 
 						if (AIForecastPlay(current_player, no_current_player, (columna - contadorObjetivo))) {
 							return columna - contadorObjetivo;
@@ -190,7 +215,7 @@ public class Tablero {
 
 					if ((fila == (num_filas - 1)) || !contenido[fila + 1][columna + 1].equals(valor_vacio)) {
 
-						System.out.println("AI horizontal " + (columna + 1));
+						// System.out.println("AI horizontal " + (columna + 1));
 
 						if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
 							return columna + 1;
@@ -213,7 +238,7 @@ public class Tablero {
 
 						if ((fila == (num_filas - 1)) || !contenido[fila + 1][columna + 1].equals(valor_vacio)) {
 
-							System.out.println("AI horizontal " + columna + 1);
+							// System.out.println("AI horizontal " + columna + 1);
 
 							return columna + 1;
 						}
@@ -231,7 +256,7 @@ public class Tablero {
 
 						if ((fila == (num_filas - 1)) || !contenido[fila + 1][columna + 2].equals(valor_vacio)) {
 
-							System.out.println("AI horizontal " + columna);
+							// System.out.println("AI horizontal " + columna);
 
 							return columna + 2;
 						}
@@ -278,7 +303,7 @@ public class Tablero {
 							&& contenido[fil - contadorObjetivo][col - contadorObjetivo].equals(valor_vacio)
 							&& (!contenido[fil - (contadorObjetivo - 1)][col - contadorObjetivo].equals(valor_vacio))) {
 
-						System.out.println("AI diagonal " + (col - contadorObjetivo));
+						// System.out.println("AI diagonal " + (col - contadorObjetivo));
 
 						if (AIForecastPlay(current_player, no_current_player, (col - contadorObjetivo))) {
 							return col - contadorObjetivo;
@@ -289,7 +314,7 @@ public class Tablero {
 					if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas)) && ((col + 1) < (num_columnas))
 							&& contenido[fil + 1][col + 1].equals(valor_vacio))) {
 
-						System.out.println("AI diagonal " + (col + 1));
+						// System.out.println("AI diagonal " + (col + 1));
 
 						if (AIForecastPlay(current_player, no_current_player, (col + 1))) {
 							return col + 1;
@@ -303,7 +328,7 @@ public class Tablero {
 							&& (contenido[fil + 1][col + 1].equals(valor_vacio)
 									&& (!contenido[fil + (contadorObjetivo - 1)][col + 1].equals(valor_vacio)))) {
 
-						System.out.println("AI diagonal " + (col + 1));
+						// System.out.println("AI diagonal " + (col + 1));
 
 						if (AIForecastPlay(current_player, no_current_player, (col + 1))) {
 							return col + 1;
@@ -321,7 +346,7 @@ public class Tablero {
 										&& contenido[fil + 2][col + 2].equals(currentChip)
 										&& contenido[fil + 3][col + 3].equals(currentChip)))) {
 
-							System.out.println("AI diagonal " + (col + 1));
+							// System.out.println("AI diagonal " + (col + 1));
 
 							return col + 1;
 
@@ -334,7 +359,7 @@ public class Tablero {
 										&& !contenido[fil + 3][col + 2].equals(valor_vacio)
 										&& contenido[fil + 3][col + 3].equals(currentChip)))) {
 
-							System.out.println("AI diagonal " + (col + 2));
+							// System.out.println("AI diagonal " + (col + 2));
 
 							return col + 2;
 
@@ -381,7 +406,7 @@ public class Tablero {
 							&& contenido[fil - contadorObjetivo][col + contadorObjetivo].equals(valor_vacio)
 							&& (!contenido[fil - (contadorObjetivo - 1)][col + contadorObjetivo].equals(valor_vacio))) {
 
-						System.out.println("AI antidiagonal " + (col + contadorObjetivo));
+						// System.out.println("AI antidiagonal " + (col + contadorObjetivo));
 
 						if (AIForecastPlay(current_player, no_current_player, (col + contadorObjetivo))) {
 							return col + contadorObjetivo;
@@ -394,7 +419,7 @@ public class Tablero {
 						// Comprobacion hueco inferior lleno para no regalar la jugada
 						if (fil + 1 == num_filas - 1) {
 
-							System.out.println("AI antidiagonal " + (col - 1));
+							// System.out.println("AI antidiagonal " + (col - 1));
 
 							if (AIForecastPlay(current_player, no_current_player, (col - 1))) {
 								return col - 1;
@@ -403,7 +428,7 @@ public class Tablero {
 						} else if ((fil + 1 < num_filas - 1)
 								&& !contenido[fil + (contadorObjetivo - 1)][col - 1].equals(valor_vacio)) {
 
-							System.out.println("AI antidiagonal " + (col - 1));
+							// System.out.println("AI antidiagonal " + (col - 1));
 
 							if (AIForecastPlay(current_player, no_current_player, (col - 1))) {
 								return col - 1;
@@ -425,7 +450,7 @@ public class Tablero {
 										&& contenido[fil + 2][col - 2].equals(currentChip)
 										&& contenido[fil + 3][col - 3].equals(currentChip)))) {
 
-							System.out.println("AI antidiagonal " + col);
+							// System.out.println("AI antidiagonal " + col);
 
 							return col - 1;
 
@@ -439,7 +464,7 @@ public class Tablero {
 										&& !contenido[fil + 3][col - 2].equals(valor_vacio)
 										&& contenido[fil + 3][col - 3].equals(currentChip)))) {
 
-							System.out.println("AI antidiagonal " + col);
+							// System.out.println("AI antidiagonal " + col);
 
 							return col - 2;
 
@@ -710,7 +735,8 @@ public class Tablero {
 
 	// Condicion de victoria Auxiliar
 	public boolean check_victoriaAux(Jugador player, String[][] auxContent) {
-		System.out.println(check_diagonalAux(player, auxContent) + "" + player.getFichas());
+		// System.out.println(check_diagonalAux(player, auxContent) + "" +
+		// player.getFichas());
 		return check_diagonalAux(player, auxContent) || check_horizontalAux(player, auxContent)
 				|| check_verticalAux(player, auxContent);
 

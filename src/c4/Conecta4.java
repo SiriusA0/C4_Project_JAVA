@@ -84,7 +84,7 @@ public class Conecta4 {
 			} else {
 
 				user_col = tablero.AIPlay(current_player, no_current_player, 3);
-
+				
 				if (user_col == -1) {
 					user_col = tablero.AIPlay(no_current_player, current_player, 3);
 				}
