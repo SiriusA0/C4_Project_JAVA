@@ -97,14 +97,6 @@ public class Conecta4 {
 				}
 
 				if (user_col == -1) {
-					user_col = tablero.AIPlay(current_player, no_current_player, 1);
-				}
-
-				if (user_col == -1) {
-					user_col = tablero.AIPlay(no_current_player, current_player, 1);
-				}
-
-				if (user_col == -1) {
 
 					if (turno < 6) {
 
