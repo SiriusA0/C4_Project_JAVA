@@ -64,10 +64,44 @@ public class Tablero {
 		for (int i = num_filas - 1; i >= 0; i--) {
 			if (auxContent[i][cpuCol].equals(valor_vacio)) {
 				auxContent[i][cpuCol] = currentChip;
+				i = -1;
 			}
 		}
+		//////////////////////////////////////////////////////////////////////
+		System.out.println("Tablero Forecast");
+		for (int i = 0; i < getNum_filas(); i++) {
 
-		if (check_victoria(current_player)) { // Devuelve true si hay victoria de la máquina
+			for (int j = 0; j < getNum_columnas(); j++) {
+				if (j == 0)
+					System.out.print((i + 1) + " | ");
+
+				System.out.print(auxContent[i][j] + " ");
+
+				if (j == (getNum_columnas() - 1))
+					System.out.print(" | " + (i + 1));
+
+			}
+
+			System.out.println();
+
+			if (i == getNum_filas() - 1) {
+				System.out.print("   -");
+				for (int k = 0; k < getNum_columnas(); k++) {
+					System.out.print("--");
+				}
+				System.out.println();
+
+				System.out.print("    ");
+				for (int k = 0; k < getNum_columnas(); k++) {
+					System.out.print("" + (k + 1) + " ");
+				}
+				System.out.println();
+			}
+		}
+		System.out.print("Tablero Forecast");
+		//////////////////////////////////////////////////////////////////////
+
+		if (check_victoriaAux(current_player, auxContent)) { // Devuelve true si hay victoria de la máquina
 
 			System.out.println("AIForecastPlay - Victoria");
 			return true;
@@ -84,21 +118,18 @@ public class Tablero {
 
 				// Comprobacion victoria futura
 
-				if (check_victoria(no_current_player)) { // Devuelve true si hay victoria del rival
+				if (check_victoriaAux(no_current_player, auxContent)) { // Devuelve true si hay victoria del rival
 
 					System.out.println("AIForecastPlay - No derrota");
-					flag = false;
-				}else{
-					System.out.println("AIForecastPlay - buena jugada");
-					flag = true;
+					return false;
 				}
 
 				auxContent[x][i] = valor_vacio;
 			}
 
 		}
-		
-		return flag;
+
+		return true;
 	}
 
 	// Contador vertical: funcion que se limita a contar las fichas en cada columna.
@@ -280,9 +311,7 @@ public class Tablero {
 
 						// Posicion inferior derecha fila == ultima fila
 					} else if (((contador == contadorObjetivo) && ((fil + 1) < (num_filas))
-							&& ((col + 1) < (num_columnas)) && contenido[fil + 1][col + 1].equals(valor_vacio)))
-
-					{
+							&& ((col + 1) < (num_columnas)) && contenido[fil + 1][col + 1].equals(valor_vacio))) {
 
 						System.out.println("AI diagonal " + (col + 1));
 
@@ -290,6 +319,7 @@ public class Tablero {
 							return col + 1;
 						}
 
+						System.out.println("BREAKPOINT");
 						// // Posicion inferior derecha, fila != ultima fila, comprueba la inferior
 					} else if ((contador == contadorObjetivo) && (col < (num_columnas - (contadorObjetivo - 1)))
 							&& (fil < (num_filas - (contadorObjetivo - 1)))
@@ -545,6 +575,64 @@ public class Tablero {
 		return false;
 	}
 
+	private boolean check_diagonalAux(Jugador player, String[][] auxContent) {
+		// Selección de columna
+		for (int columna = 0; columna < getNum_columnas(); columna++) {
+
+			// Selección de fila
+			for (int fila = 0; fila < getNum_filas(); fila++) {
+				int col = columna;
+				int fil = fila;
+				int cont = 0;
+
+				while (col < getNum_columnas() && fil < getNum_filas()) {
+					if (auxContent[fil][col].equals(player.getFichas())) {
+						cont++;
+					} else {
+						cont = 0;
+					}
+
+					if (cont == 4) {
+						return true;
+					}
+
+					col++;
+					fil++;
+
+				}
+
+			}
+		}
+		// Antidiagonal
+		for (int columna = getNum_columnas() - 1; columna >= 0; columna--) {
+
+			// Selección de fila
+			for (int fila = 0; fila < getNum_filas(); fila++) {
+				int col = columna;
+				int fil = fila;
+				int cont = 0;
+
+				while (col >= 0 && fil < getNum_filas()) {
+					if (auxContent[fil][col].equals(player.getFichas())) {
+						cont++;
+					} else {
+						cont = 0;
+					}
+
+					if (cont == 4) {
+						return true;
+					}
+
+					col--;
+					fil++;
+
+				}
+
+			}
+		}
+		return false;
+	}
+
 	private boolean check_vertical(Jugador player) {
 		int cont = 0;
 
@@ -554,6 +642,31 @@ public class Tablero {
 			for (int fila = 0; fila < getNum_filas(); fila++) {
 
 				if (contenido[fila][columna].equals(player.getFichas())) {
+					cont++;
+				} else {
+					cont = 0;
+				}
+
+				if (cont == 4) {
+					return true;
+				}
+
+			}
+
+		}
+		return false;
+
+	}
+
+	private boolean check_verticalAux(Jugador player, String[][] auxContent) {
+		int cont = 0;
+
+		for (int columna = 0; columna < getNum_columnas(); columna++) {
+			cont = 0;
+
+			for (int fila = 0; fila < getNum_filas(); fila++) {
+
+				if (auxContent[fila][columna].equals(player.getFichas())) {
 					cont++;
 				} else {
 					cont = 0;
@@ -591,9 +704,37 @@ public class Tablero {
 		return false;
 	}
 
+	private boolean check_horizontalAux(Jugador player, String[][] auxContent) {
+		int cont = 0;
+
+		for (int fila = getNum_filas() - 1; fila >= 0; fila--) {
+			cont = 0;
+
+			for (int columna = 0; columna < getNum_columnas(); columna++) {
+				if (auxContent[fila][columna].equals(player.getFichas())) {
+					cont++;
+				} else {
+					cont = 0;
+				}
+
+				if (cont == 4) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	// Condicion de victoria
 	public boolean check_victoria(Jugador player) {
 		return check_diagonal(player) || check_horizontal(player) || check_vertical(player);
+
+	}
+
+	// Condicion de victoria Auxiliar
+	public boolean check_victoriaAux(Jugador player, String[][] auxContent) {
+		return check_diagonalAux(player, auxContent) || check_horizontalAux(player, auxContent)
+				|| check_verticalAux(player, auxContent);
 
 	}
 
