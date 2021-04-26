@@ -7,13 +7,6 @@ public class Tablero {
 	// tablero en si mismo
 	private String contenido[][];
 
-	// Array de posiciones prohibidas
-	// metodo contains para checkear si el numero de col devuelto es una posicion
-	// prohibida
-
-	// Posiciones que significan victorial del jugador
-	// int[] posicionesProhibidas = new int[0];
-
 	public final int MAX_CASILLAS;
 
 	// el valor que tiene el hueco vacio del tablero por defecto ' '
@@ -28,13 +21,6 @@ public class Tablero {
 		this.valor_vacio = valor_vacio;
 		contenido = new String[num_filas][num_columnas];
 		this.MAX_CASILLAS = num_columnas * num_filas;
-
-		// for (int i = 1; i < (num_columnas - 1); i++) {
-		//
-		// posicionesProhibidas[i] = -1;
-		//
-		// }
-
 		ini_tablero();
 	}
 
@@ -71,13 +57,13 @@ public class Tablero {
 
 		if (check_victoriaAux(no_current_player, auxContent)) { // Devuelve true si hay victoria de la maquina
 
-			// System.out.println("AIForecastPlay - Victoria Maquina");
+			System.out.println("AIForecastPlay - Victoria Maquina");
 			return true;
 		}
 
 		if (check_victoriaAux(current_player, auxContent)) { // Devuelve true si hay victoria de la humano
 
-			// System.out.println("AIForecastPlay - Victoria Humana");
+			System.out.println("AIForecastPlay - Victoria Humana");
 			return true;
 		}
 
@@ -99,6 +85,9 @@ public class Tablero {
 			// Comprobacion victoria futura
 
 			if (check_victoriaAux(current_player, auxContent)) { // Devuelve true si hay victoria del rival
+
+				Conecta4.BannedPositions.add(i);
+				System.out.println("Posicion prhobida: " + i);
 
 				// System.out.println("AIForecastPlay - No derrota");
 				return false;
@@ -171,30 +160,29 @@ public class Tablero {
 				} else {
 					contador = 0;
 				}
-				//3, 1 , 3, 2, 5
 				// Check ? _ ?
-				if (contadorObjetivo == 2 
-								&& (columna < (num_columnas - 2))
-								&& (fila == num_filas-1)
-								&& ((contenido[fila][columna].equals(currentChip)
+				if (contadorObjetivo == 2 && (columna < (num_columnas - 2)) && (fila == num_filas - 1)
+						&& ((contenido[fila][columna].equals(currentChip)
 								&& contenido[fila][columna + 1].equals(valor_vacio)
 								&& contenido[fila][columna + 2].equals(currentChip)))) {
 
-					return columna + 1;
+					if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
+						return columna + 1;
+					}
 
 				}
-				if (contadorObjetivo == 2 
-								&& (columna < (num_columnas - 2))
-								&& (fila < num_filas-1)
-								&& ((contenido[fila][columna].equals(currentChip)
+				// Check ? _ ?
+				if (contadorObjetivo == 2 && (columna < (num_columnas - 2)) && (fila < num_filas - 1)
+						&& ((contenido[fila][columna].equals(currentChip)
 								&& contenido[fila][columna + 1].equals(valor_vacio)
-								&& !contenido[fila+1][columna + 1].equals(valor_vacio)
+								&& !contenido[fila + 1][columna + 1].equals(valor_vacio)
 								&& contenido[fila][columna + 2].equals(currentChip)))) {
 
-					return columna + 1;
+					if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
+						return columna + 1;
+					}
 
 				}
-				
 
 				if ((contador == contadorObjetivo) && (columna > (contadorObjetivo - 1))
 						&& contenido[fila][columna - contadorObjetivo].equals(valor_vacio)) {
@@ -204,7 +192,11 @@ public class Tablero {
 
 						// System.out.println("AI horizontal " + (columna - contadorObjetivo));
 
-						if (AIForecastPlay(current_player, no_current_player, (columna - contadorObjetivo))) {
+						if (contadorObjetivo < 3) {
+							if (AIForecastPlay(current_player, no_current_player, (columna - contadorObjetivo))) {
+								return columna - contadorObjetivo;
+							}
+						} else {
 							return columna - contadorObjetivo;
 						}
 					}
@@ -217,7 +209,11 @@ public class Tablero {
 
 						// System.out.println("AI horizontal " + (columna + 1));
 
-						if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
+						if (contadorObjetivo < 3) {
+							if (AIForecastPlay(current_player, no_current_player, (columna + 1))) {
+								return columna + 1;
+							}
+						} else {
 							return columna + 1;
 						}
 

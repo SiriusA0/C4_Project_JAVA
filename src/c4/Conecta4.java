@@ -1,5 +1,7 @@
 package c4;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Conecta4 {
@@ -9,6 +11,9 @@ public class Conecta4 {
 	private Jugador[] player;
 
 	private String fichas_disponibles[] = { "R", "A", "J", "H", "L", "V" };
+
+	// Lista posiciones prohibidas
+	static List<Integer> BannedPositions = new ArrayList<>();
 
 	// Estado del juego
 	private boolean tableroLleno = false;
@@ -33,6 +38,7 @@ public class Conecta4 {
 
 			if (this.num_jugadores == 0) {
 
+				System.out.println("Función no disponible, encintrará bugs");
 				this.tablero = new Tablero(num_filas, num_cols, " ");
 
 				this.player = new Jugador[2];
@@ -97,6 +103,7 @@ public class Conecta4 {
 	}
 
 	private int arbolDeDecisiones(Jugador current_player, Jugador no_current_player) {
+
 		int user_col;
 		if (current_player.isHuman()) {
 
@@ -127,12 +134,20 @@ public class Conecta4 {
 					System.out.print("Apertura");
 
 				} else {
-					user_col = tablero.RandomPlay(0, -1);
 					System.out.print("Random");
+					int randomCol = -1;
+					do {
+						randomCol = tablero.RandomPlay(0, -1);
+					} while (BannedPositions.contains(randomCol));
+					user_col = randomCol;
 
 				}
 			}
 		}
+		System.out.println("Posiciones prohibidas -> anterior" + BannedPositions);
+		BannedPositions.clear();
+		System.out.println("Posiciones prohibidas -> limpia" + BannedPositions);
+		System.out.println(user_col);
 		return user_col;
 	}
 
