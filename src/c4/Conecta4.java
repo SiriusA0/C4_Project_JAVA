@@ -126,7 +126,7 @@ public class Conecta4 {
 				user_col = tablero.AIPlay(current_player, no_current_player, 2);
 			}
 
-			if (user_col == -1) { // Random TODO Posiciones prohibidas en lista
+			if (user_col == -1) { // Random
 
 				if (turno < 6) {
 
